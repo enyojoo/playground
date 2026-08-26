@@ -92,12 +92,12 @@ export default function CheckoutPage() {
           <div>
             <Link
               href="/cancel"
-              className="text-sm font-medium text-stone-500 hover:text-stone-800"
+              className="text-sm font-medium text-muted hover:text-foreground"
             >
               ← Cancel and go back
             </Link>
 
-            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900">
+            <h1 className="font-heading mt-4 text-3xl font-semibold tracking-tight text-foreground">
               Checkout
             </h1>
 
@@ -110,14 +110,14 @@ export default function CheckoutPage() {
             <div ref={mountRef} className="mt-8 min-h-[320px]" />
           </div>
 
-          <aside className="h-fit rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-stone-500">
+          <aside className="h-fit rounded-2xl border border-border bg-surface p-6 shadow-sm">
+            <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
               Order summary
             </h2>
-            <p className="mt-4 text-lg font-semibold text-stone-900">
+            <p className="mt-4 text-lg font-semibold text-foreground">
               {payload.summary}
             </p>
-            <p className="mt-6 text-2xl font-semibold text-stone-900">
+            <p className="mt-6 text-2xl font-semibold text-foreground">
               {formatMoney(payload.amount, payload.currency)}
             </p>
           </aside>

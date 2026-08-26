@@ -9,16 +9,16 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="flex flex-col rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-      <div className="mb-4 flex h-32 items-center justify-center rounded-xl bg-stone-50 text-5xl">
+    <article className="flex flex-col rounded-2xl border border-border bg-surface p-6 shadow-sm">
+      <div className="mb-4 flex h-32 items-center justify-center rounded-xl bg-background text-5xl">
         {product.image}
       </div>
 
-      <h3 className="text-lg font-semibold text-stone-900">{product.name}</h3>
-      <p className="mt-1 flex-1 text-sm text-stone-600">{product.description}</p>
+      <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
+      <p className="mt-1 flex-1 text-sm text-muted">{product.description}</p>
 
       <div className="mt-6 flex items-center justify-between gap-4">
-        <p className="text-xl font-semibold text-stone-900">
+        <p className="text-xl font-semibold text-foreground">
           {formatMoney(product.amount, product.currency)}
         </p>
 
@@ -48,19 +48,19 @@ export function PlanCard({ plan }: PlanCardProps) {
     <article
       className={`flex flex-col rounded-2xl border p-6 shadow-sm ${
         plan.highlighted
-          ? "border-stone-900 bg-stone-900 text-white"
-          : "border-stone-200 bg-white"
+          ? "border-primary bg-primary text-white"
+          : "border-border bg-surface"
       }`}
     >
       {plan.highlighted ? (
-        <span className="mb-4 inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
+        <span className="mb-4 inline-flex w-fit rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">
           Most popular
         </span>
       ) : null}
 
-      <h3 className="text-xl font-semibold">{plan.name}</h3>
+      <h3 className="font-heading text-xl font-semibold">{plan.name}</h3>
       <p
-        className={`mt-1 text-sm ${plan.highlighted ? "text-stone-300" : "text-stone-600"}`}
+        className={`mt-1 text-sm ${plan.highlighted ? "text-white/80" : "text-muted"}`}
       >
         {plan.description}
       </p>
@@ -68,7 +68,7 @@ export function PlanCard({ plan }: PlanCardProps) {
       <p className="mt-6 text-3xl font-semibold">
         {formatMoney(plan.amount, plan.currency)}
         <span
-          className={`text-base font-normal ${plan.highlighted ? "text-stone-300" : "text-stone-500"}`}
+          className={`text-base font-normal ${plan.highlighted ? "text-white/70" : "text-muted"}`}
         >
           /{plan.interval}
         </span>
@@ -77,10 +77,10 @@ export function PlanCard({ plan }: PlanCardProps) {
       <ul className="mt-6 flex-1 space-y-2 text-sm">
         {plan.features.map((feature) => (
           <li key={feature} className="flex items-start gap-2">
-            <span className={plan.highlighted ? "text-stone-300" : "text-stone-400"}>
+            <span className={plan.highlighted ? "text-white/70" : "text-muted"}>
               ✓
             </span>
-            <span className={plan.highlighted ? "text-stone-100" : "text-stone-700"}>
+            <span className={plan.highlighted ? "text-white" : "text-foreground"}>
               {feature}
             </span>
           </li>
@@ -111,22 +111,22 @@ type BookingCardProps = {
 
 export function BookingCard({ item }: BookingCardProps) {
   return (
-    <article className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+    <article className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-stone-900">{item.name}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
             {item.duration ? (
-              <span className="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-600">
+              <span className="rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-muted">
                 {item.duration}
               </span>
             ) : null}
           </div>
-          <p className="mt-1 max-w-xl text-sm text-stone-600">{item.description}</p>
+          <p className="mt-1 max-w-xl text-sm text-muted">{item.description}</p>
         </div>
 
         <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
-          <p className="text-xl font-semibold text-stone-900">
+          <p className="text-xl font-semibold text-foreground">
             {formatMoney(item.amount, item.currency)}
           </p>
 

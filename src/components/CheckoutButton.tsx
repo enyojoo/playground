@@ -80,8 +80,8 @@ export function CheckoutButton({
 
   const variantStyles =
     variant === "primary"
-      ? "bg-stone-900 text-white hover:bg-stone-800"
-      : "border border-stone-300 bg-white text-stone-900 hover:bg-stone-50";
+      ? "bg-primary text-white hover:bg-primary-hover"
+      : "border border-border bg-surface text-foreground hover:bg-background";
 
   return (
     <div className={className}>

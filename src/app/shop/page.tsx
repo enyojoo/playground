@@ -5,11 +5,12 @@ export default function ShopPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <div className="max-w-2xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-stone-900">
+        <p className="text-sm font-medium text-primary">One-time payments</p>
+        <h1 className="font-heading mt-2 text-3xl font-semibold tracking-tight text-foreground">
           Shop
         </h1>
-        <p className="mt-3 text-stone-600">
-          Everyday essentials, shipped to your door.
+        <p className="mt-3 text-muted">
+          Example products for testing a single checkout payment.
         </p>
       </div>
 
