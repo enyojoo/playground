@@ -13,21 +13,6 @@ export function SiteFooter() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end">
           <Link
-            href={BRAND.url}
-            className="inline-flex items-center gap-1.5 hover:text-foreground"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={BRAND.favicon}
-              alt=""
-              aria-hidden="true"
-              className="h-4 w-4 shrink-0"
-            />
-            easner.com
-          </Link>
-          <Link
             href={BRAND.businessUrl}
             className="inline-flex items-center gap-1.5 hover:text-foreground"
             target="_blank"
