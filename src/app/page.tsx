@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { getPublicSiteUrl, PRODUCTION_SITE_URL } from "@/lib/site";
+
 const scenarios = [
   {
     href: "/shop",
@@ -25,6 +27,8 @@ const scenarios = [
 ];
 
 export default function HomePage() {
+  const siteUrl = getPublicSiteUrl();
+
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <div className="max-w-2xl">
@@ -69,23 +73,26 @@ export default function HomePage() {
           Dashboard URLs to configure
         </h2>
         <p className="mt-2 text-sm text-stone-600">
-          Add these redirect URLs in your Easner Business dashboard for this
-          playground:
+          Add these redirect URLs in your Easner Business dashboard for{" "}
+          <span className="font-medium text-stone-800">{PRODUCTION_SITE_URL}</span>
+          :
         </p>
         <dl className="mt-6 space-y-4 text-sm">
           <div>
             <dt className="font-medium text-stone-700">Success URL</dt>
             <dd className="mt-1 font-mono text-stone-600">
-              /thanks?session_id={"{"}CHECKOUT_SESSION_ID{"}"}
+              {siteUrl}/thanks?session_id={"{"}CHECKOUT_SESSION_ID{"}"}
             </dd>
           </div>
           <div>
             <dt className="font-medium text-stone-700">Cancel URL</dt>
-            <dd className="mt-1 font-mono text-stone-600">/cancel</dd>
+            <dd className="mt-1 font-mono text-stone-600">{siteUrl}/cancel</dd>
           </div>
           <div>
             <dt className="font-medium text-stone-700">Webhook endpoint</dt>
-            <dd className="mt-1 font-mono text-stone-600">/api/webhooks/easner</dd>
+            <dd className="mt-1 font-mono text-stone-600">
+              {siteUrl}/api/webhooks/easner
+            </dd>
           </div>
         </dl>
       </section>

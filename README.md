@@ -20,15 +20,17 @@ Add your keys from the Easner Business dashboard:
 EASNER_SECRET_KEY=easner_sk_test_...
 NEXT_PUBLIC_EASNER_PUBLISHABLE_KEY=easner_pk_test_...
 EASNER_WEBHOOK_SECRET=whsec_...
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=https://playground.easner.com
 ```
+
+For local development, use `http://localhost:3000` instead.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) locally, or [https://playground.easner.com](https://playground.easner.com) in production.
 
 ## Pages
 
@@ -45,9 +47,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Configure these in your Easner Business dashboard:
 
-- **Success URL:** `https://your-domain.com/thanks?session_id={CHECKOUT_SESSION_ID}`
-- **Cancel URL:** `https://your-domain.com/cancel`
-- **Webhook URL:** `https://your-domain.com/api/webhooks/easner`
+- **Success URL:** `https://playground.easner.com/thanks?session_id={CHECKOUT_SESSION_ID}`
+- **Cancel URL:** `https://playground.easner.com/cancel`
+- **Webhook URL:** `https://playground.easner.com/api/webhooks/easner`
 
 ## Integration flow
 
