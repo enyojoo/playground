@@ -1,3 +1,5 @@
+"use client";
+
 import { formatMoney, type BookableItem, type ShopProduct, type SubscriptionPlan } from "@/lib/catalog";
 import { CheckoutButton } from "@/components/CheckoutButton";
 
