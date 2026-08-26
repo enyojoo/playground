@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { BackLink } from "@/components/BackLink";
 import { PageShell } from "@/components/PageShell";
 import { formatMoney } from "@/lib/catalog";
 import {
@@ -103,12 +103,7 @@ export default function CheckoutPage() {
           </aside>
 
           <div className="order-2 min-w-0 lg:order-1">
-            <Link
-              href="/cancel"
-              className="inline-flex min-h-11 items-center text-sm font-medium text-muted hover:text-foreground"
-            >
-              ← Cancel and go back
-            </Link>
+            <BackLink />
 
             <h1 className="font-heading mt-3 text-2xl font-semibold tracking-tight text-foreground sm:mt-4 sm:text-3xl">
               Checkout
