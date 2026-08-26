@@ -6,9 +6,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Playground — Easner Checkout Demo",
-  description:
-    "A demo merchant site for testing Easner Checkout one-time, subscription, and custom payments.",
+  title: "Playground",
+  description: "A demo store for goods, subscriptions, bookings, and downloads.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

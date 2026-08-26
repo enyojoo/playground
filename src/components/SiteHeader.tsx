@@ -21,7 +21,7 @@ export function SiteHeader() {
           </span>
           <div>
             <p className="text-sm font-semibold text-stone-900">Playground</p>
-            <p className="text-xs text-stone-500">Easner Checkout demo store</p>
+            <p className="text-xs text-stone-500">Goods, plans & bookings</p>
           </div>
         </Link>
 

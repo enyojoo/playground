@@ -1,26 +1,20 @@
 import Link from "next/link";
 
-const scenarios = [
+const sections = [
   {
     href: "/shop",
-    title: "One-time payments",
-    description:
-      "E-commerce style checkout. Charge once and fulfil orders on checkout.completed using order_id metadata.",
-    badge: "mode: payment",
+    title: "Shop",
+    description: "Physical goods and one-off purchases. Pay once at checkout.",
   },
   {
     href: "/pricing",
-    title: "Subscriptions",
-    description:
-      "SaaS pricing page. Create recurring sessions and unlock access on checkout.completed. Handle renewals via webhooks.",
-    badge: "mode: subscription",
+    title: "Pricing",
+    description: "Monthly plans for teams and individuals. Subscribe and get started.",
   },
   {
     href: "/book",
-    title: "Custom payments",
-    description:
-      "Pay-for-access flows like bookings and downloads. Key fulfilment by your own metadata ids.",
-    badge: "mode: payment + metadata",
+    title: "Book & Download",
+    description: "Reserve a session, grab a workshop seat, or download instantly.",
   },
 ];
 
@@ -28,37 +22,27 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <div className="max-w-2xl">
-        <p className="text-sm font-medium uppercase tracking-wide text-stone-500">
-          Easner Checkout Playground
-        </p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-stone-900">
-          Test checkout like a real merchant site
+        <h1 className="text-4xl font-semibold tracking-tight text-stone-900">
+          Welcome to Playground
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-stone-600">
-          This site mirrors how a business integrates Easner Checkout on their
-          own website. Sessions are created on the server; only the{" "}
-          <code className="rounded bg-stone-200 px-1.5 py-0.5 text-sm">
-            client_secret
-          </code>{" "}
-          and publishable key reach the browser.
+          A sample store for goods, subscriptions, bookings, and digital
+          downloads. Browse below and check out when you are ready.
         </p>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {scenarios.map((scenario) => (
+        {sections.map((section) => (
           <Link
-            key={scenario.href}
-            href={scenario.href}
+            key={section.href}
+            href={section.href}
             className="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
           >
-            <span className="inline-flex rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-600">
-              {scenario.badge}
-            </span>
-            <h2 className="mt-4 text-lg font-semibold text-stone-900 group-hover:underline">
-              {scenario.title}
+            <h2 className="text-lg font-semibold text-stone-900 group-hover:underline">
+              {section.title}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-stone-600">
-              {scenario.description}
+              {section.description}
             </p>
           </Link>
         ))}

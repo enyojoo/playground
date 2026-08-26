@@ -32,7 +32,7 @@ export function CheckoutButton({
 
   const handleCheckout = useCallback(async () => {
     if (!publishableKey) {
-      setError("NEXT_PUBLIC_EASNER_PUBLISHABLE_KEY is not configured");
+      setError("Checkout is unavailable right now. Please try again later.");
       return;
     }
 

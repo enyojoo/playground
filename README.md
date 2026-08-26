@@ -36,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000) locally, or [https://playgro
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Overview and dashboard URL config |
+| `/` | Home |
 | `/shop` | One-time payments (e-commerce) |
 | `/pricing` | Subscription payments (SaaS) |
 | `/book` | Custom payments (bookings, downloads) |

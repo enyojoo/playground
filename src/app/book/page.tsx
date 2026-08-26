@@ -5,21 +5,12 @@ export default function BookPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <div className="max-w-2xl">
-        <p className="text-sm font-medium text-stone-500">Custom payments</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900">
+        <h1 className="text-3xl font-semibold tracking-tight text-stone-900">
           Book & Download
         </h1>
         <p className="mt-3 text-stone-600">
-          Pay-for-access flows keyed by your own ids — bookings, workshop seats,
-          or digital downloads. Fulfil using{" "}
-          <code className="rounded bg-stone-200 px-1.5 py-0.5 text-sm">
-            booking_id
-          </code>{" "}
-          or{" "}
-          <code className="rounded bg-stone-200 px-1.5 py-0.5 text-sm">
-            download_id
-          </code>{" "}
-          from webhook metadata.
+          Reserve a session, join a workshop, or get instant access to digital
+          products.
         </p>
       </div>
 
