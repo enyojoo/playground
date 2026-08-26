@@ -18,7 +18,7 @@ export const BRAND = {
 } as const;
 
 export const PLAYGROUND = {
-  tagline: "See Easner Checkout in action",
+  headline: "See Easner Checkout in Action",
   description:
     "Explore how Easner Checkout works across real business scenarios — one-time payments, subscriptions, and pay-for-access flows.",
 } as const;

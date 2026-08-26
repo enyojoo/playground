@@ -9,15 +9,17 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="flex flex-col rounded-2xl border border-border bg-surface p-6 shadow-sm">
-      <div className="mb-4 flex h-32 items-center justify-center rounded-xl bg-background text-5xl">
+    <article className="flex flex-col rounded-2xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+      <div className="mb-4 flex h-28 items-center justify-center rounded-xl bg-background text-4xl sm:h-32 sm:text-5xl">
         {product.image}
       </div>
 
       <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
-      <p className="mt-1 flex-1 text-sm text-muted">{product.description}</p>
+      <p className="mt-1 flex-1 text-sm leading-relaxed text-muted">
+        {product.description}
+      </p>
 
-      <div className="mt-6 flex items-center justify-between gap-4">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <p className="text-xl font-semibold text-foreground">
           {formatMoney(product.amount, product.currency)}
         </p>
@@ -32,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
             product_id: product.id,
           })}
           label="Buy now"
-          className="w-auto shrink-0"
+          fullWidth="mobile"
         />
       </div>
     </article>
@@ -46,7 +48,7 @@ type PlanCardProps = {
 export function PlanCard({ plan }: PlanCardProps) {
   return (
     <article
-      className={`flex flex-col rounded-2xl border p-6 shadow-sm ${
+      className={`flex flex-col rounded-2xl border p-5 shadow-sm sm:p-6 ${
         plan.highlighted
           ? "border-primary bg-primary text-white"
           : "border-border bg-surface"
@@ -65,7 +67,7 @@ export function PlanCard({ plan }: PlanCardProps) {
         {plan.description}
       </p>
 
-      <p className="mt-6 text-3xl font-semibold">
+      <p className="mt-6 text-2xl font-semibold sm:text-3xl">
         {formatMoney(plan.amount, plan.currency)}
         <span
           className={`text-base font-normal ${plan.highlighted ? "text-white/70" : "text-muted"}`}
@@ -100,6 +102,7 @@ export function PlanCard({ plan }: PlanCardProps) {
         label="Subscribe"
         variant={plan.highlighted ? "secondary" : "primary"}
         className="mt-8"
+        fullWidth
       />
     </article>
   );
@@ -111,10 +114,10 @@ type BookingCardProps = {
 
 export function BookingCard({ item }: BookingCardProps) {
   return (
-    <article className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <div className="flex items-center gap-2">
+    <article className="rounded-2xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
             {item.duration ? (
               <span className="rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-muted">
@@ -122,10 +125,10 @@ export function BookingCard({ item }: BookingCardProps) {
               </span>
             ) : null}
           </div>
-          <p className="mt-1 max-w-xl text-sm text-muted">{item.description}</p>
+          <p className="mt-1 text-sm leading-relaxed text-muted">{item.description}</p>
         </div>
 
-        <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:items-end lg:shrink-0">
           <p className="text-xl font-semibold text-foreground">
             {formatMoney(item.amount, item.currency)}
           </p>
@@ -139,7 +142,7 @@ export function BookingCard({ item }: BookingCardProps) {
               [item.metadataKey]: `${item.id}_${Date.now()}`,
             })}
             label="Pay now"
-            className="w-auto"
+            fullWidth="mobile"
           />
         </div>
       </div>

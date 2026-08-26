@@ -15,7 +15,14 @@ type CheckoutButtonProps = {
   label: string;
   variant?: "primary" | "secondary";
   className?: string;
+  fullWidth?: boolean | "mobile";
 };
+
+function widthClass(fullWidth?: boolean | "mobile"): string {
+  if (fullWidth === true) return "w-full";
+  if (fullWidth === "mobile") return "w-full sm:w-auto";
+  return "w-auto";
+}
 
 export function CheckoutButton({
   mode,
@@ -27,6 +34,7 @@ export function CheckoutButton({
   label,
   variant = "primary",
   className = "",
+  fullWidth = false,
 }: CheckoutButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -76,7 +84,7 @@ export function CheckoutButton({
   }, [mode, amount, currency, interval, metadata, summary, router]);
 
   const baseStyles =
-    "inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60";
+    "inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60";
 
   const variantStyles =
     variant === "primary"
@@ -89,7 +97,7 @@ export function CheckoutButton({
         type="button"
         onClick={handleCheckout}
         disabled={loading}
-        className={`${baseStyles} ${variantStyles} w-full ${className}`}
+        className={`${baseStyles} ${variantStyles} ${widthClass(fullWidth)}`}
       >
         {loading ? "Continuing to checkout…" : label}
       </button>

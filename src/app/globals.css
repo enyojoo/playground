@@ -24,12 +24,30 @@
   --font-heading: var(--font-unbounded);
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .font-heading {
   font-family: var(--font-unbounded), sans-serif;
+  text-wrap: balance;
+}
+
+.checkout-mount {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.checkout-mount form,
+.checkout-mount input,
+.checkout-mount button {
+  max-width: 100%;
 }
