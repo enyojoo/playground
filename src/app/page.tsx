@@ -8,7 +8,7 @@ const useCases = [
     href: "/shop",
     title: "One-time payments",
     description:
-      "Try checkout for products and single purchases — like an online store or invoice payment.",
+      "Try checkout for products and single purchases – like an online store or invoice payment.",
     example: "Shop",
   },
   {

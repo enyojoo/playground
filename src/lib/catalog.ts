@@ -108,7 +108,7 @@ export const bookableItems: BookableItem[] = [
   {
     id: "dl_templates",
     name: "Template Pack",
-    description: "Instant download — 40 presentation templates.",
+    description: "Instant download – 40 presentation templates.",
     amount: 3500,
     currency: "usd",
     metadataKey: "download_id",
