@@ -26,6 +26,7 @@ export function ProductCard({ product }: ProductCardProps) {
           mode="payment"
           amount={product.amount}
           currency={product.currency}
+          summary={product.name}
           metadata={() => ({
             order_id: `ord_${product.id}_${Date.now()}`,
             product_id: product.id,
@@ -91,6 +92,7 @@ export function PlanCard({ plan }: PlanCardProps) {
         amount={plan.amount}
         currency={plan.currency}
         interval={plan.interval}
+        summary={`${plan.name} plan`}
         metadata={() => ({
           user_id: `user_${Date.now()}`,
           plan: plan.id,
@@ -132,6 +134,7 @@ export function BookingCard({ item }: BookingCardProps) {
             mode="payment"
             amount={item.amount}
             currency={item.currency}
+            summary={item.name}
             metadata={() => ({
               [item.metadataKey]: `${item.id}_${Date.now()}`,
             })}

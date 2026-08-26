@@ -1,7 +1,9 @@
 "use client";
 
-import Script from "next/script";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
+
+import { saveCheckout } from "@/lib/checkout-storage";
 
 type CheckoutButtonProps = {
   mode: "payment" | "subscription";
@@ -9,12 +11,11 @@ type CheckoutButtonProps = {
   currency?: string;
   interval?: "month" | "year";
   metadata: Record<string, string> | (() => Record<string, string>);
+  summary: string;
   label: string;
   variant?: "primary" | "secondary";
   className?: string;
 };
-
-const publishableKey = process.env.NEXT_PUBLIC_EASNER_PUBLISHABLE_KEY ?? "";
 
 export function CheckoutButton({
   mode,
@@ -22,25 +23,16 @@ export function CheckoutButton({
   currency = "usd",
   interval,
   metadata,
+  summary,
   label,
   variant = "primary",
   className = "",
 }: CheckoutButtonProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [scriptReady, setScriptReady] = useState(false);
 
   const handleCheckout = useCallback(async () => {
-    if (!publishableKey) {
-      setError("Checkout is unavailable right now. Please try again later.");
-      return;
-    }
-
-    if (!window.EasnerCheckout) {
-      setError("Checkout script is still loading. Try again in a moment.");
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -66,22 +58,22 @@ export function CheckoutButton({
       };
 
       if (!response.ok || !data.client_secret) {
-        throw new Error(data.error ?? "Failed to create checkout session");
+        throw new Error(data.error ?? "Failed to start checkout");
       }
 
-      window.EasnerCheckout.openOverlay({
-        publishableKey,
+      saveCheckout({
         clientSecret: data.client_secret,
-        onSuccess: () => {
-          window.location.href = "/thanks";
-        },
+        summary,
+        amount,
+        currency,
       });
+
+      router.push("/checkout");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Checkout failed");
-    } finally {
       setLoading(false);
     }
-  }, [mode, amount, currency, interval, metadata]);
+  }, [mode, amount, currency, interval, metadata, summary, router]);
 
   const baseStyles =
     "inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60";
@@ -92,29 +84,21 @@ export function CheckoutButton({
       : "border border-stone-300 bg-white text-stone-900 hover:bg-stone-50";
 
   return (
-    <>
-      <Script
-        src="https://js.easner.com/v1/checkout.js"
-        strategy="afterInteractive"
-        onReady={() => setScriptReady(true)}
-      />
+    <div className={className}>
+      <button
+        type="button"
+        onClick={handleCheckout}
+        disabled={loading}
+        className={`${baseStyles} ${variantStyles} w-full ${className}`}
+      >
+        {loading ? "Continuing to checkout…" : label}
+      </button>
 
-      <div className={className}>
-        <button
-          type="button"
-          onClick={handleCheckout}
-          disabled={loading || !scriptReady}
-          className={`${baseStyles} ${variantStyles} w-full ${className}`}
-        >
-          {loading ? "Opening checkout…" : label}
-        </button>
-
-        {error ? (
-          <p className="mt-2 text-sm text-red-600" role="alert">
-            {error}
-          </p>
-        ) : null}
-      </div>
-    </>
+      {error ? (
+        <p className="mt-2 text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

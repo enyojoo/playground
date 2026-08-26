@@ -1,15 +1,26 @@
 export {};
 
 declare global {
-  interface EasnerCheckoutOpenOptions {
+  interface EasnerCheckoutOptions {
     publishableKey: string;
     clientSecret: string;
-    onSuccess?: (result: { sessionId?: string }) => void;
-    onCancel?: () => void;
+    customerEmail?: string;
+    customerName?: string;
+    onSuccess?: (result?: unknown) => void;
+    onError?: (error: Error) => void;
+  }
+
+  interface EasnerCheckoutInstance {
+    destroy: () => void;
   }
 
   interface EasnerCheckoutGlobal {
-    openOverlay: (options: EasnerCheckoutOpenOptions) => void;
+    mount: (
+      target: string | HTMLElement,
+      options: EasnerCheckoutOptions,
+    ) => Promise<EasnerCheckoutInstance>;
+    openOverlay: (options: EasnerCheckoutOptions & { title?: string }) => Promise<EasnerCheckoutInstance>;
+    destroy: (target?: string | HTMLElement | EasnerCheckoutInstance) => void;
   }
 
   interface Window {
