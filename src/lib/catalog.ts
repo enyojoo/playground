@@ -55,36 +55,23 @@ export const shopProducts: ShopProduct[] = [
   },
 ];
 
-export const subscriptionPlans: SubscriptionPlan[] = [
-  {
-    id: "plan_starter",
-    name: "Starter",
-    description: "For individuals getting started.",
-    amount: 1900,
-    currency: "usd",
-    interval: "month",
-    features: ["1 workspace", "5 GB storage", "Email support"],
-  },
-  {
-    id: "plan_pro",
-    name: "Pro",
-    description: "For growing teams that need more.",
-    amount: 4900,
-    currency: "usd",
-    interval: "month",
-    features: ["5 workspaces", "50 GB storage", "Priority support", "API access"],
-    highlighted: true,
-  },
-  {
-    id: "plan_business",
-    name: "Business",
-    description: "For companies with advanced needs.",
-    amount: 9900,
-    currency: "usd",
-    interval: "month",
-    features: ["Unlimited workspaces", "500 GB storage", "Dedicated support", "SSO"],
-  },
-];
+export const subscriptionPlan: SubscriptionPlan = {
+  id: "plan_pro",
+  name: "Pro",
+  description: "For growing teams that need more.",
+  amount: 4900,
+  currency: "usd",
+  interval: "month",
+  features: [
+    "5 workspaces",
+    "50 GB storage",
+    "Priority support",
+    "Per-seat billing",
+  ],
+};
+
+/** Single subscription offering on /pricing (inline checkout demo). */
+export const subscriptionPlans: SubscriptionPlan[] = [subscriptionPlan];
 
 export const bookableItems: BookableItem[] = [
   {

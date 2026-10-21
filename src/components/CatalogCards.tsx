@@ -48,12 +48,6 @@ export function PlanCard({ plan }: PlanCardProps) {
           : "border-border bg-surface"
       }`}
     >
-      {plan.highlighted ? (
-        <span className="mb-4 inline-flex w-fit rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">
-          Most popular
-        </span>
-      ) : null}
-
       <h3 className="font-heading text-xl font-semibold">{plan.name}</h3>
       <p
         className={`mt-1 text-sm ${plan.highlighted ? "text-white/80" : "text-muted"}`}
@@ -86,10 +80,8 @@ export function PlanCard({ plan }: PlanCardProps) {
       <CheckoutInline
         itemType="subscription"
         itemId={plan.id}
-        label="Check out"
-        variant={plan.highlighted ? "secondary" : "primary"}
+        autoStart
         className="mt-8"
-        fullWidth
       />
     </article>
   );

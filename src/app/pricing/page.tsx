@@ -18,16 +18,13 @@ export default function PricingPage() {
           Pricing
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-          Your server returns a client secret; checkout.js mounts the pay form
-          inside each plan card. Pro includes adjustable quantity for per-seat
-          pricing.
+          Subscribe to Pro below. Choose how many seats you need on the checkout
+          form.
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-        {subscriptionPlans.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} />
-        ))}
+      <div className="mt-8 max-w-lg sm:mt-12">
+        <PlanCard plan={subscriptionPlans[0]!} />
       </div>
     </PageShell>
   );

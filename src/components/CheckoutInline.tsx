@@ -9,10 +9,12 @@ import { fetchClientCheckoutSession } from "@/lib/checkout-client";
 type CheckoutInlineProps = {
   itemType: CheckoutItemType;
   itemId: string;
-  label: string;
+  label?: string;
   variant?: "primary" | "secondary";
   className?: string;
   fullWidth?: boolean | "mobile";
+  /** Create a session and mount checkout as soon as checkout.js is ready (no button). */
+  autoStart?: boolean;
 };
 
 function widthClass(fullWidth?: boolean | "mobile"): string {
@@ -24,13 +26,15 @@ function widthClass(fullWidth?: boolean | "mobile"): string {
 export function CheckoutInline({
   itemType,
   itemId,
-  label,
+  label = "Check out",
   variant = "primary",
   className = "",
   fullWidth = false,
+  autoStart = false,
 }: CheckoutInlineProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const instanceRef = useRef<{ destroy: () => void } | null>(null);
+  const autoStartAttempted = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scriptReady, setScriptReady] = useState(false);
@@ -88,7 +92,7 @@ export function CheckoutInline({
     };
   }, [session, scriptReady]);
 
-  const handleCheckout = useCallback(async () => {
+  const startCheckout = useCallback(async () => {
     if (!scriptReady) {
       setError("Checkout script is still loading. Try again in a moment.");
       return;
@@ -110,6 +114,17 @@ export function CheckoutInline({
     }
   }, [itemType, itemId, scriptReady]);
 
+  useEffect(() => {
+    if (!autoStart || !scriptReady || autoStartAttempted.current) {
+      return;
+    }
+
+    autoStartAttempted.current = true;
+    void startCheckout();
+  }, [autoStart, scriptReady, startCheckout]);
+
+  const showMount = autoStart || Boolean(session);
+
   return (
     <>
       <Script
@@ -119,25 +134,31 @@ export function CheckoutInline({
       />
 
       <div className={className}>
-        <button
-          type="button"
-          onClick={handleCheckout}
-          disabled={loading || !scriptReady}
-          className={`${baseStyles} ${variantStyles} ${widthClass(fullWidth)}`}
-        >
-          {loading ? "Loading checkout…" : label}
-        </button>
+        {!autoStart ? (
+          <button
+            type="button"
+            onClick={() => void startCheckout()}
+            disabled={loading || !scriptReady}
+            className={`${baseStyles} ${variantStyles} ${widthClass(fullWidth)}`}
+          >
+            {loading ? "Loading checkout…" : label}
+          </button>
+        ) : null}
 
         {error ? (
-          <p className="mt-2 text-sm text-red-600" role="alert">
+          <p className={`text-sm text-red-600 ${autoStart ? "" : "mt-2"}`} role="alert">
             {error}
           </p>
         ) : null}
 
-        {session ? (
+        {autoStart && loading && !session && !error ? (
+          <p className="text-sm text-muted">Loading checkout…</p>
+        ) : null}
+
+        {showMount ? (
           <div
             ref={mountRef}
-            className="checkout-mount mt-4 min-h-[280px] rounded-xl border border-border bg-surface p-4"
+            className={`checkout-mount min-h-[280px] rounded-xl border border-border bg-surface p-4 ${autoStart ? "" : "mt-4"}`}
           />
         ) : null}
       </div>
