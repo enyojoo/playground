@@ -1,5 +1,7 @@
 import { formatMoney, type BookableItem, type ShopProduct, type SubscriptionPlan } from "@/lib/catalog";
 import { CheckoutForm } from "@/components/CheckoutForm";
+import { CheckoutInline } from "@/components/CheckoutInline";
+import { CheckoutOverlay } from "@/components/CheckoutOverlay";
 
 type ProductCardProps = {
   product: ShopProduct;
@@ -81,7 +83,7 @@ export function PlanCard({ plan }: PlanCardProps) {
         ))}
       </ul>
 
-      <CheckoutForm
+      <CheckoutInline
         itemType="subscription"
         itemId={plan.id}
         label="Check out"
@@ -118,7 +120,7 @@ export function BookingCard({ item }: BookingCardProps) {
             {formatMoney(item.amount, item.currency)}
           </p>
 
-          <CheckoutForm
+          <CheckoutOverlay
             itemType="booking"
             itemId={item.id}
             label="Check out"

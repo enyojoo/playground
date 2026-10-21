@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { PageShell } from "@/components/PageShell";
+import { SurfaceBadge } from "@/components/SurfaceBadge";
 import { PLAYGROUND } from "@/lib/brand";
 
 const useCases = [
@@ -8,22 +9,25 @@ const useCases = [
     href: "/shop",
     title: "One-time payments",
     description:
-      "Try checkout for products and single purchases – like an online store or invoice payment.",
+      "Hosted checkout: your server redirects to Easner’s payment page, then back to your site.",
     example: "Shop",
+    surface: "Hosted page",
   },
   {
     href: "/pricing",
     title: "Subscriptions",
     description:
-      "See how recurring billing works for SaaS plans and memberships billed monthly.",
+      "Inline checkout: the pay form mounts inside your page with checkout.js.",
     example: "Pricing",
+    surface: "Inline",
   },
   {
     href: "/book",
     title: "Pay for access",
     description:
-      "Test bookings, workshop seats, and instant digital downloads with a single checkout flow.",
+      "Overlay checkout: a panel opens over your page while the customer pays.",
     example: "Book & Download",
+    surface: "Overlay",
   },
 ];
 
@@ -46,9 +50,12 @@ export default function HomePage() {
             href={useCase.href}
             className="group rounded-2xl border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md sm:p-6"
           >
-            <span className="inline-flex rounded-full bg-background px-2.5 py-1 text-xs font-medium text-muted">
-              {useCase.example}
-            </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex rounded-full bg-background px-2.5 py-1 text-xs font-medium text-muted">
+                {useCase.example}
+              </span>
+              <SurfaceBadge label={useCase.surface} />
+            </div>
             <h2 className="font-heading mt-4 text-lg font-semibold text-foreground group-hover:text-primary">
               {useCase.title}
             </h2>

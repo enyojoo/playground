@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  resolveCheckoutItem,
-  type CheckoutItemType,
-} from "@/lib/checkout-items";
-import { createCheckoutSession } from "@/lib/easner";
+import type { CheckoutItemType } from "@/lib/checkout-items";
+import { startCheckoutSessionForItem } from "@/lib/start-checkout-session";
 
 function parseItemType(value: FormDataEntryValue | null): CheckoutItemType | null {
   if (value === "shop" || value === "subscription" || value === "booking") {
@@ -24,20 +21,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid checkout request" }, { status: 400 });
     }
 
-    const resolved = resolveCheckoutItem(itemType, itemId.trim());
+    const session = await startCheckoutSessionForItem(itemType, itemId.trim());
 
-    if (!resolved) {
+    if (!session) {
       return NextResponse.json({ error: "Unknown item" }, { status: 404 });
     }
-
-    const session = await createCheckoutSession({
-      mode: resolved.mode,
-      currency: resolved.currency,
-      line_items: [resolved.lineItem],
-      recurring: resolved.recurring,
-      metadata: resolved.metadata,
-      idempotencyKey: `checkout-${resolved.idempotencyReference}`,
-    });
 
     if (!session.url) {
       return NextResponse.json(
