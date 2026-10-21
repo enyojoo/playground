@@ -4,10 +4,7 @@ import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { CheckoutItemType } from "@/lib/checkout-items";
-import {
-  fetchCheckoutClientSecret,
-  publishableKey,
-} from "@/lib/checkout-client";
+import { fetchClientCheckoutSession } from "@/lib/checkout-client";
 
 type CheckoutInlineProps = {
   itemType: CheckoutItemType;
@@ -37,7 +34,10 @@ export function CheckoutInline({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scriptReady, setScriptReady] = useState(false);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [session, setSession] = useState<{
+    clientSecret: string;
+    publishableKey: string;
+  } | null>(null);
 
   const baseStyles =
     "inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60";
@@ -49,11 +49,10 @@ export function CheckoutInline({
 
   useEffect(() => {
     if (
-      !clientSecret ||
+      !session ||
       !scriptReady ||
       !mountRef.current ||
-      !window.EasnerCheckout ||
-      !publishableKey
+      !window.EasnerCheckout
     ) {
       return;
     }
@@ -61,8 +60,8 @@ export function CheckoutInline({
     let cancelled = false;
 
     void window.EasnerCheckout.mount(mountRef.current, {
-      publishableKey,
-      clientSecret,
+      publishableKey: session.publishableKey,
+      clientSecret: session.clientSecret,
       onSuccess: () => {
         window.location.href = "/thanks";
       },
@@ -87,14 +86,9 @@ export function CheckoutInline({
       instanceRef.current?.destroy();
       instanceRef.current = null;
     };
-  }, [clientSecret, scriptReady]);
+  }, [session, scriptReady]);
 
   const handleCheckout = useCallback(async () => {
-    if (!publishableKey) {
-      setError("Checkout is unavailable right now. Please try again later.");
-      return;
-    }
-
     if (!scriptReady) {
       setError("Checkout script is still loading. Try again in a moment.");
       return;
@@ -104,11 +98,11 @@ export function CheckoutInline({
     setError(null);
     instanceRef.current?.destroy();
     instanceRef.current = null;
-    setClientSecret(null);
+    setSession(null);
 
     try {
-      const secret = await fetchCheckoutClientSecret(itemType, itemId);
-      setClientSecret(secret);
+      const next = await fetchClientCheckoutSession(itemType, itemId);
+      setSession(next);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Checkout failed");
     } finally {
@@ -140,7 +134,7 @@ export function CheckoutInline({
           </p>
         ) : null}
 
-        {clientSecret ? (
+        {session ? (
           <div
             ref={mountRef}
             className="checkout-mount mt-4 min-h-[280px] rounded-xl border border-border bg-surface p-4"

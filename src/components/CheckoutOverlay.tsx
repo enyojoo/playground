@@ -4,10 +4,7 @@ import Script from "next/script";
 import { useCallback, useState } from "react";
 
 import type { CheckoutItemType } from "@/lib/checkout-items";
-import {
-  fetchCheckoutClientSecret,
-  publishableKey,
-} from "@/lib/checkout-client";
+import { fetchClientCheckoutSession } from "@/lib/checkout-client";
 
 type CheckoutOverlayProps = {
   itemType: CheckoutItemType;
@@ -45,11 +42,6 @@ export function CheckoutOverlay({
       : "border border-border bg-surface text-foreground hover:bg-background";
 
   const handleCheckout = useCallback(async () => {
-    if (!publishableKey) {
-      setError("Checkout is unavailable right now. Please try again later.");
-      return;
-    }
-
     if (!window.EasnerCheckout) {
       setError("Checkout script is still loading. Try again in a moment.");
       return;
@@ -59,7 +51,10 @@ export function CheckoutOverlay({
     setError(null);
 
     try {
-      const clientSecret = await fetchCheckoutClientSecret(itemType, itemId);
+      const { clientSecret, publishableKey } = await fetchClientCheckoutSession(
+        itemType,
+        itemId,
+      );
 
       await window.EasnerCheckout.openOverlay({
         publishableKey,

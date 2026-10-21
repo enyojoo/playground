@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import type { CheckoutItemType } from "@/lib/checkout-items";
+import { getEasnerPublishableKey } from "@/lib/publishable-key";
 import { startCheckoutSessionForItem } from "@/lib/start-checkout-session";
 
 type ClientCheckoutBody = {
@@ -46,7 +47,22 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ client_secret: session.client_secret });
+    const publishableKey = getEasnerPublishableKey();
+
+    if (!publishableKey) {
+      return NextResponse.json(
+        {
+          error:
+            "Publishable key is not configured on the server (set EASNER_PUBLISHABLE_KEY or NEXT_PUBLIC_EASNER_PUBLISHABLE_KEY).",
+        },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({
+      client_secret: session.client_secret,
+      publishable_key: publishableKey,
+    });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unable to start checkout";
