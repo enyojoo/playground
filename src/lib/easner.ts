@@ -2,22 +2,55 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "crypto";
 
-export type CheckoutMode = "payment" | "subscription";
+import { getPublicSiteUrl } from "@/lib/site";
+
+export type CheckoutLineItem = {
+  name: string;
+  amount: number;
+  quantity?: number;
+  description?: string;
+  adjustable_quantity?: {
+    enabled: true;
+    minimum: number;
+    maximum?: number;
+  };
+};
 
 export type CreateCheckoutSessionInput = {
-  mode: CheckoutMode;
-  amount: number;
+  mode: "payment" | "subscription";
   currency: string;
-  interval?: "month" | "year";
+  line_items: CheckoutLineItem[];
+  recurring?: {
+    interval: "day" | "week" | "month" | "year";
+    interval_count: number;
+  };
+  trial_days?: number;
   metadata: Record<string, string>;
+  idempotencyKey: string;
 };
 
 export type CheckoutSession = {
   id: string;
-  client_secret: string;
+  url: string;
+  client_secret?: string;
+  status?: string;
+  payment_status?: string | null;
+  mode?: string;
+  amount_total?: number;
+  currency?: string;
+  metadata?: Record<string, string>;
+  subscription_id?: string | null;
 };
 
-import { getPublicSiteUrl } from "@/lib/site";
+function getSecretKey(): string {
+  const secretKey = process.env.EASNER_SECRET_KEY;
+
+  if (!secretKey) {
+    throw new Error("EASNER_SECRET_KEY is not configured");
+  }
+
+  return secretKey;
+}
 
 export function getAppUrl(): string {
   return getPublicSiteUrl();
@@ -26,25 +59,24 @@ export function getAppUrl(): string {
 export async function createCheckoutSession(
   input: CreateCheckoutSessionInput,
 ): Promise<CheckoutSession> {
-  const secretKey = process.env.EASNER_SECRET_KEY;
-
-  if (!secretKey) {
-    throw new Error("EASNER_SECRET_KEY is not configured");
-  }
-
+  const secretKey = getSecretKey();
   const baseUrl = getAppUrl();
 
   const body: Record<string, unknown> = {
     mode: input.mode,
-    amount: input.amount,
     currency: input.currency,
+    line_items: input.line_items,
     success_url: `${baseUrl}/thanks?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/cancel`,
     metadata: input.metadata,
   };
 
-  if (input.mode === "subscription" && input.interval) {
-    body.interval = input.interval;
+  if (input.mode === "subscription" && input.recurring) {
+    body.recurring = input.recurring;
+  }
+
+  if (input.trial_days !== undefined) {
+    body.trial_days = input.trial_days;
   }
 
   const response = await fetch("https://api.easner.com/v1/checkout/sessions", {
@@ -52,6 +84,7 @@ export async function createCheckoutSession(
     headers: {
       Authorization: `Bearer ${secretKey}`,
       "Content-Type": "application/json",
+      "Idempotency-Key": input.idempotencyKey,
     },
     body: JSON.stringify(body),
   });
@@ -62,8 +95,42 @@ export async function createCheckoutSession(
     const message =
       typeof payload?.error?.message === "string"
         ? payload.error.message
-        : "Failed to create checkout session";
+        : typeof payload?.error?.code === "string"
+          ? payload.error.code
+          : "Failed to create checkout session";
     throw new Error(message);
+  }
+
+  return payload as CheckoutSession;
+}
+
+export async function retrieveCheckoutSession(
+  sessionId: string,
+): Promise<CheckoutSession | null> {
+  const secretKey = getSecretKey();
+
+  const response = await fetch(
+    `https://api.easner.com/v1/checkout/sessions?id=${encodeURIComponent(sessionId)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  const payload = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      typeof payload?.error?.message === "string"
+        ? payload.error.message
+        : "Failed to retrieve checkout session",
+    );
   }
 
   return payload as CheckoutSession;
@@ -79,9 +146,18 @@ export function verifyWebhookSignature(
     return false;
   }
 
-  const [timestampPart, signaturePart] = signatureHeader.split(",");
-  const timestamp = timestampPart?.replace("t=", "");
-  const signature = signaturePart?.replace("v1=", "");
+  const parts = signatureHeader.split(",").map((part) => part.trim());
+  let timestamp: string | undefined;
+  let signature: string | undefined;
+
+  for (const part of parts) {
+    if (part.startsWith("t=")) {
+      timestamp = part.slice(2);
+    }
+    if (part.startsWith("v1=")) {
+      signature = part.slice(3);
+    }
+  }
 
   if (!timestamp || !signature) {
     return false;

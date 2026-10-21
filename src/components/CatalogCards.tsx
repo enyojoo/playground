@@ -1,7 +1,5 @@
-"use client";
-
 import { formatMoney, type BookableItem, type ShopProduct, type SubscriptionPlan } from "@/lib/catalog";
-import { CheckoutButton } from "@/components/CheckoutButton";
+import { CheckoutForm } from "@/components/CheckoutForm";
 
 type ProductCardProps = {
   product: ShopProduct;
@@ -24,16 +22,10 @@ export function ProductCard({ product }: ProductCardProps) {
           {formatMoney(product.amount, product.currency)}
         </p>
 
-        <CheckoutButton
-          mode="payment"
-          amount={product.amount}
-          currency={product.currency}
-          summary={product.name}
-          metadata={() => ({
-            order_id: `ord_${product.id}_${Date.now()}`,
-            product_id: product.id,
-          })}
-          label="Buy now"
+        <CheckoutForm
+          itemType="shop"
+          itemId={product.id}
+          label="Check out"
           fullWidth="mobile"
         />
       </div>
@@ -89,17 +81,10 @@ export function PlanCard({ plan }: PlanCardProps) {
         ))}
       </ul>
 
-      <CheckoutButton
-        mode="subscription"
-        amount={plan.amount}
-        currency={plan.currency}
-        interval={plan.interval}
-        summary={`${plan.name} plan`}
-        metadata={() => ({
-          user_id: `user_${Date.now()}`,
-          plan: plan.id,
-        })}
-        label="Subscribe"
+      <CheckoutForm
+        itemType="subscription"
+        itemId={plan.id}
+        label="Check out"
         variant={plan.highlighted ? "secondary" : "primary"}
         className="mt-8"
         fullWidth
@@ -133,15 +118,10 @@ export function BookingCard({ item }: BookingCardProps) {
             {formatMoney(item.amount, item.currency)}
           </p>
 
-          <CheckoutButton
-            mode="payment"
-            amount={item.amount}
-            currency={item.currency}
-            summary={item.name}
-            metadata={() => ({
-              [item.metadataKey]: `${item.id}_${Date.now()}`,
-            })}
-            label="Pay now"
+          <CheckoutForm
+            itemType="booking"
+            itemId={item.id}
+            label="Check out"
             fullWidth="mobile"
           />
         </div>
