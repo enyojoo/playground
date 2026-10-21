@@ -1,8 +1,8 @@
 "use client";
 
-import Script from "next/script";
 import { useCallback, useState } from "react";
 
+import { useEasnerCheckoutReady } from "@/hooks/use-easner-checkout-ready";
 import type { CheckoutItemType } from "@/lib/checkout-items";
 import { fetchClientCheckoutSession } from "@/lib/checkout-client";
 
@@ -29,9 +29,9 @@ export function CheckoutOverlay({
   className = "",
   fullWidth = false,
 }: CheckoutOverlayProps) {
+  const scriptReady = useEasnerCheckoutReady();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [scriptReady, setScriptReady] = useState(false);
 
   const baseStyles =
     "inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60";
@@ -71,14 +71,7 @@ export function CheckoutOverlay({
   }, [itemType, itemId]);
 
   return (
-    <>
-      <Script
-        src="https://js.easner.com/v1/checkout.js"
-        strategy="afterInteractive"
-        onReady={() => setScriptReady(true)}
-      />
-
-      <div className={className}>
+    <div className={className}>
         <button
           type="button"
           onClick={handleCheckout}
@@ -93,7 +86,6 @@ export function CheckoutOverlay({
             {error}
           </p>
         ) : null}
-      </div>
-    </>
+    </div>
   );
 }

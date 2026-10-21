@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Unbounded } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
+
+import { EASNER_CHECKOUT_JS_URL } from "@/lib/easner-checkout";
 
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -36,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${GeistSans.variable} ${unbounded.variable} h-full`}
     >
       <body className="flex min-h-full min-w-0 flex-col overflow-x-hidden bg-background text-foreground antialiased">
+        <Script src={EASNER_CHECKOUT_JS_URL} strategy="beforeInteractive" />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

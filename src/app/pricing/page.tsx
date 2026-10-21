@@ -4,8 +4,12 @@ import { PlanDetails } from "@/components/PlanDetails";
 import { PricingCheckoutPanel } from "@/components/PricingCheckoutPanel";
 import { SurfaceBadge } from "@/components/SurfaceBadge";
 import { subscriptionPlan } from "@/lib/catalog";
+import { createPricingCheckoutSession } from "@/lib/pricing-checkout-session";
 
-export default function PricingPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PricingPage() {
+  const initialSession = await createPricingCheckoutSession();
   return (
     <PageShell>
       <BackLink />
@@ -26,7 +30,10 @@ export default function PricingPage() {
 
       <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:mt-12 lg:grid-cols-2 lg:gap-10">
         <PlanDetails plan={subscriptionPlan} />
-        <PricingCheckoutPanel itemId={subscriptionPlan.id} />
+        <PricingCheckoutPanel
+          itemId={subscriptionPlan.id}
+          initialSession={initialSession}
+        />
       </div>
     </PageShell>
   );
