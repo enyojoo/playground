@@ -163,9 +163,23 @@ export function verifyWebhookSignature(
     return false;
   }
 
+  const timestampSeconds = Number(timestamp);
+
+  if (!Number.isFinite(timestampSeconds)) {
+    return false;
+  }
+
+  if (Math.abs(Date.now() / 1000 - timestampSeconds) > 5 * 60) {
+    return false;
+  }
+
   const expected = createHmac("sha256", secret)
     .update(`${timestamp}.${rawBody}`)
     .digest("hex");
+
+  if (signature.length !== expected.length) {
+    return false;
+  }
 
   try {
     return timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
