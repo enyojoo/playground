@@ -1,6 +1,5 @@
-import { formatMoney, type BookableItem, type ShopProduct, type SubscriptionPlan } from "@/lib/catalog";
+import { formatMoney, type BookableItem, type ShopProduct } from "@/lib/catalog";
 import { CheckoutForm } from "@/components/CheckoutForm";
-import { CheckoutInline } from "@/components/CheckoutInline";
 import { CheckoutOverlay } from "@/components/CheckoutOverlay";
 
 type ProductCardProps = {
@@ -31,58 +30,6 @@ export function ProductCard({ product }: ProductCardProps) {
           fullWidth="mobile"
         />
       </div>
-    </article>
-  );
-}
-
-type PlanCardProps = {
-  plan: SubscriptionPlan;
-};
-
-export function PlanCard({ plan }: PlanCardProps) {
-  return (
-    <article
-      className={`flex flex-col rounded-2xl border p-5 shadow-sm sm:p-6 ${
-        plan.highlighted
-          ? "border-primary bg-primary text-white"
-          : "border-border bg-surface"
-      }`}
-    >
-      <h3 className="font-heading text-xl font-semibold">{plan.name}</h3>
-      <p
-        className={`mt-1 text-sm ${plan.highlighted ? "text-white/80" : "text-muted"}`}
-      >
-        {plan.description}
-      </p>
-
-      <p className="mt-6 text-2xl font-semibold sm:text-3xl">
-        {formatMoney(plan.amount, plan.currency)}
-        <span
-          className={`text-base font-normal ${plan.highlighted ? "text-white/70" : "text-muted"}`}
-        >
-          /{plan.interval}
-        </span>
-      </p>
-
-      <ul className="mt-6 flex-1 space-y-2 text-sm">
-        {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2">
-            <span className={plan.highlighted ? "text-white/70" : "text-muted"}>
-              ✓
-            </span>
-            <span className={plan.highlighted ? "text-white" : "text-foreground"}>
-              {feature}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <CheckoutInline
-        itemType="subscription"
-        itemId={plan.id}
-        autoStart
-        className="mt-8"
-      />
     </article>
   );
 }

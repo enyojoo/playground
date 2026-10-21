@@ -23,6 +23,16 @@ function widthClass(fullWidth?: boolean | "mobile"): string {
   return "w-auto";
 }
 
+function CheckoutSpinner() {
+  return (
+    <div
+      className="size-9 animate-spin rounded-full border-2 border-border border-t-primary"
+      role="status"
+      aria-label="Loading checkout"
+    />
+  );
+}
+
 export function CheckoutInline({
   itemType,
   itemId,
@@ -35,9 +45,10 @@ export function CheckoutInline({
   const mountRef = useRef<HTMLDivElement>(null);
   const instanceRef = useRef<{ destroy: () => void } | null>(null);
   const autoStartAttempted = useRef(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(autoStart);
   const [error, setError] = useState<string | null>(null);
   const [scriptReady, setScriptReady] = useState(false);
+  const [embedReady, setEmbedReady] = useState(false);
   const [session, setSession] = useState<{
     clientSecret: string;
     publishableKey: string;
@@ -80,9 +91,12 @@ export function CheckoutInline({
         }
 
         instanceRef.current = instance;
+        setEmbedReady(true);
+        setLoading(false);
       })
       .catch((err: unknown) => {
         setError(err instanceof Error ? err.message : "Unable to load checkout");
+        setLoading(false);
       });
 
     return () => {
@@ -100,6 +114,7 @@ export function CheckoutInline({
 
     setLoading(true);
     setError(null);
+    setEmbedReady(false);
     instanceRef.current?.destroy();
     instanceRef.current = null;
     setSession(null);
@@ -124,6 +139,8 @@ export function CheckoutInline({
   }, [autoStart, scriptReady, startCheckout]);
 
   const showMount = autoStart || Boolean(session);
+  const showSpinner =
+    autoStart && !error && !embedReady && (!scriptReady || loading || Boolean(session));
 
   return (
     <>
@@ -151,15 +168,20 @@ export function CheckoutInline({
           </p>
         ) : null}
 
-        {autoStart && loading && !session && !error ? (
-          <p className="text-sm text-muted">Loading checkout…</p>
-        ) : null}
-
         {showMount ? (
           <div
-            ref={mountRef}
-            className={`checkout-mount min-h-[280px] rounded-xl border border-border bg-surface p-4 ${autoStart ? "" : "mt-4"}`}
-          />
+            className={`relative min-h-[280px] ${autoStart ? "h-full w-full" : "mt-4 rounded-xl border border-border bg-surface p-4"}`}
+          >
+            {showSpinner ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <CheckoutSpinner />
+              </div>
+            ) : null}
+            <div
+              ref={mountRef}
+              className={`checkout-mount h-full min-h-[280px] ${showSpinner ? "invisible" : ""} ${autoStart ? "" : ""}`}
+            />
+          </div>
         ) : null}
       </div>
     </>

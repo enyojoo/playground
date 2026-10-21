@@ -1,8 +1,9 @@
-import { PlanCard } from "@/components/CatalogCards";
 import { BackLink } from "@/components/BackLink";
 import { PageShell } from "@/components/PageShell";
+import { PlanDetails } from "@/components/PlanDetails";
+import { PricingCheckoutPanel } from "@/components/PricingCheckoutPanel";
 import { SurfaceBadge } from "@/components/SurfaceBadge";
-import { subscriptionPlans } from "@/lib/catalog";
+import { subscriptionPlan } from "@/lib/catalog";
 
 export default function PricingPage() {
   return (
@@ -18,13 +19,14 @@ export default function PricingPage() {
           Pricing
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-          Subscribe to Pro below. Choose how many seats you need on the checkout
-          form.
+          Review the plan and complete checkout on the right. Adjust seats on the
+          form before you pay.
         </p>
       </div>
 
-      <div className="mt-8 max-w-lg sm:mt-12">
-        <PlanCard plan={subscriptionPlans[0]!} />
+      <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:mt-12 lg:grid-cols-2 lg:gap-10">
+        <PlanDetails plan={subscriptionPlan} />
+        <PricingCheckoutPanel itemId={subscriptionPlan.id} />
       </div>
     </PageShell>
   );
