@@ -30,7 +30,7 @@ On **https://playground.easner.com/connect**:
 2. Set **Email** to the address on the Easner account that will approve the link.
 3. **Get paid with Easner.** The real sheet opens.
 4. On a phone, open the Easner app and enter the code or scan the QR. On a laptop, Approve as a test payee is the same sheet.
-5. This page redeems the approval. The account shows as connected.
+5. The page finishes the link. The account shows as connected.
 6. **Withdraw.** The payout appears in the list on this page. Test payouts settle on their own within a minute. See [Connect](https://docs.easner.com/connect).
 
 `npm run smoke:connect` still uses `POST /v1/test/payees/:id/approve_link` because it cannot scan a QR code. That call is not part of the page.

@@ -19,7 +19,7 @@ export async function POST(request: Request) {
           error: {
             type: "invalid_request",
             code: "link_session_expired",
-            message: "Start Get paid with Easner again. The link session expired.",
+            message: "That link timed out. Tap Get paid with Easner and try again.",
           },
         },
         { status: 400 },
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
           error: {
             type: "invalid_request",
             code: "invalid_request",
-            message: "The connect sheet did not return an approval code.",
+            message: "Easner did not confirm the link. Close the screen and try again.",
           },
         },
         { status: 400 },
@@ -49,7 +49,8 @@ export async function POST(request: Request) {
           error: {
             type: "invalid_request",
             code: "state_mismatch",
-            message: "This approval does not match the link session on this browser.",
+            message:
+              "This approval was started in a different browser or tab. Tap Get paid with Easner on this page and try again.",
           },
         },
         { status: 400 },

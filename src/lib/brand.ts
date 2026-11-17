@@ -27,31 +27,37 @@ export const CHECKOUT = {
   title: "Checkout",
   card: "Customers pay you on your site. See hosted, inline, and overlay checkout in one place.",
   summary:
-    "Your buyers never leave your brand. You choose where the payment form lives: Easner’s hosted page, embedded in your layout, or in a panel over the content. The examples below are one site with three placements. Check out as a customer would.",
+    "Your buyers stay on your brand. Choose how checkout appears: Easner’s own page, a form inside your site, or a panel over your content. The examples below are one store shown three ways. Try each as a customer would.",
   hostedTitle: "Shop",
   hostedBadge: "Hosted page",
   hosted:
-    "Best when you want the simplest path: your backend creates a session, the browser opens Easner’s page, payment completes, redirect back.",
+    "Best when you want the simplest path: customers go to Easner’s secure checkout page, pay, then return to your site.",
   inlineTitle: "Pricing",
   inlineBadge: "Inline",
   inline:
-    "Best when checkout should feel native: checkout.js mounts the form in your page, including subscriptions and seat counts.",
+    "Best when checkout should feel like part of your site, including subscriptions and seat counts.",
   overlayTitle: "Book & Download",
   overlayBadge: "Overlay",
   overlay:
-    "Best when the customer stays in context: checkout.js opens a sheet over your page for a booking or a one-off purchase.",
+    "Best when the customer should stay on the page: a payment panel opens on top for a booking or a one-off purchase.",
 } as const;
 
 export const CONNECT = {
-  headline: "Connect on your site",
-  card: "You pay people on your platform. See the earnings page they use to link Easner and withdraw.",
+  headline: "Pay people on your platform",
+  card: "You pay creators, sellers, and freelancers. See the earnings page they use to link Easner and withdraw.",
   pageLead:
-    "If you run a marketplace, course site, or gig platform, Connect is the other side of your ledger. You keep your books; Easner holds linked accounts and pays out from your balance. Below is the page you give an earner after you credit a lesson or a sale.",
+    "If you run a marketplace, course site, or gig platform, Connect is how you pay the people who earn on your site. You track sales and lessons on your side; Easner links each person’s account and sends them their money. Below is the kind of page you show someone after they earn from a lesson or a sale.",
   linkTitle: "Link an Easner account",
   linkBody:
-    "Your creator enters the email on their Easner account, opens Get paid with Easner, and approves in the app or on the Easner sheet. Your server completes the link with PKCE, the same pattern you ship in production.",
+    "They enter the email on their Easner account, tap Get paid with Easner, and confirm in the Easner app or on Easner’s screen. Once they approve, their account shows as linked and they can withdraw.",
   balanceLabel: "Available to withdraw",
-  balanceHint: "You credited this on your server. Withdraw opens Easner’s payout sheet.",
-  connected: "Easner account linked. Payouts can go to this person.",
-  notConnected: "Not linked yet. Get paid with Easner runs first.",
+  balanceHint:
+    "In your product you add this balance when someone earns. This demo starts with one lesson credit. Withdraw opens Easner’s payout flow.",
+  connected: "Easner account linked. They can withdraw to this account.",
+  notConnected: "Not linked yet. They need to complete Get paid with Easner first.",
+  scriptLoading: "Loading Easner Connect…",
+  scriptError:
+    "Easner Connect did not load, so the link and withdraw screens cannot open yet. Try again in a moment.",
+  appCodeLabel: "Code for the Easner app",
+  errorTitle: "Something went wrong",
 } as const;

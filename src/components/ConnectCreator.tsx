@@ -107,7 +107,7 @@ export function ConnectCreator() {
         onError: (error) => {
           setNotice({
             code: error?.code || "connect_error",
-            message: error?.message || "The connect sheet reported an error.",
+            message: error?.message || "Easner could not finish linking. Try again.",
           });
         },
       });
@@ -138,7 +138,7 @@ export function ConnectCreator() {
         onError: (error) => {
           setNotice({
             code: error?.code || "connect_error",
-            message: error?.message || "The withdraw sheet reported an error.",
+            message: error?.message || "Easner could not start the withdrawal. Try again.",
           });
         },
         onClose: () => {
@@ -159,7 +159,7 @@ export function ConnectCreator() {
     <div className="mt-8 space-y-6">
       {notice ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-950">
-          <p className="font-semibold">{notice.code}</p>
+          <p className="font-semibold">{CONNECT.errorTitle}</p>
           <p className="mt-1">{notice.message}</p>
         </div>
       ) : null}
@@ -190,17 +190,15 @@ export function ConnectCreator() {
           {busy === "connect" ? "Opening…" : "Get paid with Easner"}
         </button>
         {scriptState === "loading" ? (
-          <p className="mt-2 text-xs text-muted">Loading connect.js…</p>
+          <p className="mt-2 text-xs text-muted">{CONNECT.scriptLoading}</p>
         ) : null}
         {scriptState === "error" ? (
-          <p className="mt-2 text-xs text-red-900">
-            connect.js did not load from https://js.easner.com/v1/connect.js, so the sheet
-            cannot open yet.
-          </p>
+          <p className="mt-2 text-xs text-red-900">{CONNECT.scriptError}</p>
         ) : null}
         {code ? (
           <p className="mt-4 text-sm text-muted">
-            App code <span className="font-mono text-lg tracking-[0.25em] text-foreground">{code}</span>
+            {CONNECT.appCodeLabel}{" "}
+            <span className="font-mono text-lg tracking-[0.25em] text-foreground">{code}</span>
           </p>
         ) : null}
         {snapshot ? (
