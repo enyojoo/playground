@@ -37,7 +37,6 @@ export function ConnectCreator() {
     try {
       const next = await getConnect<Snapshot>("/api/connect/creator/status");
       setSnapshot(next);
-      setEmail((current) => current || next.payee.email || "");
       if (next.link?.code) {
         setCode(next.link.code);
       }
