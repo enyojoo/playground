@@ -3,6 +3,7 @@ import { PageShell } from "@/components/PageShell";
 import { PlanDetails } from "@/components/PlanDetails";
 import { PricingCheckoutPanel } from "@/components/PricingCheckoutPanel";
 import { SurfaceBadge } from "@/components/SurfaceBadge";
+import { CHECKOUT } from "@/lib/brand";
 import { subscriptionPlan } from "@/lib/catalog";
 import { createPricingCheckoutSession } from "@/lib/pricing-checkout-session";
 
@@ -12,19 +13,18 @@ export default async function PricingPage() {
   const initialSession = await createPricingCheckoutSession();
   return (
     <PageShell>
-      <BackLink />
+      <BackLink href="/checkout" label="Checkout" />
 
       <div className="mt-2 max-w-2xl">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-medium text-primary">Subscriptions</p>
-          <SurfaceBadge label="Inline" />
+          <p className="text-sm font-medium text-primary">Subscription</p>
+          <SurfaceBadge label={CHECKOUT.inlineBadge} />
         </div>
         <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-          Pricing
+          {CHECKOUT.inlineTitle}
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-          Review the plan and complete checkout on the right. Adjust seats on the
-          form before you pay.
+          {CHECKOUT.inline} Change the seat count on the form before you pay.
         </p>
       </div>
 
