@@ -62,5 +62,5 @@ export const CONNECT = {
   errorTitle: "Something went wrong",
   resetCta: "Start over",
   resetHint:
-    "Clears this browser’s in-progress link and removes the test Easner connection so you can link again. Lesson earnings stay on the same demo earner.",
+    "Starts a fresh demo in this browser: unlinks the last test connection, opens a new demo earner, and adds the $250 lesson balance again so you can walk through link and withdraw.",
 } as const;

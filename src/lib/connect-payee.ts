@@ -100,18 +100,23 @@ export async function ensureDemoCreator(): Promise<StoredPayee> {
   return next;
 }
 
-/** Clears the in-progress link in this browser and unlinks the test payee on Easner. */
+/** Fresh demo: unlink the previous test payee, then a new payee with a new lesson credit. */
 export async function resetDemoCreator(): Promise<StoredPayee> {
   await clearStoredLink();
 
-  const stored = await ensureDemoCreator();
-  let payee: Payee;
-
-  try {
-    payee = await unlinkTestPayee(stored.id);
-  } catch {
-    payee = await getPayee(stored.id);
+  const previous = await readStoredPayee();
+  if (previous) {
+    try {
+      await unlinkTestPayee(previous.id);
+    } catch {
+      // Already unlinked, deleted, or unlink not applicable.
+    }
   }
+
+  await clearStoredPayee();
+
+  const payee = await createDemoPayee(newDemoReference());
+  await seedLessonCreditIfEmpty(payee.id);
 
   const next: StoredPayee = {
     id: payee.id,

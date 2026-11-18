@@ -32,7 +32,7 @@ On **https://playground.easner.com/connect**:
 4. On a phone, open the Easner app and enter the code or scan the QR. On a laptop, Approve as a test payee is the same sheet.
 5. The page finishes the link. The account shows as connected.
 6. **Withdraw.** The payout appears in the list on this page. Test payouts settle on their own within a minute. See [Connect](https://docs.easner.com/connect).
-7. **Start over.** Clears cookies for the link-in-progress and calls `POST /v1/test/payees/:id/unlink` so the same demo earner returns to **pending link** ([Unlink a test payee](https://docs.easner.com/api-reference/connect/unlink-a-test-payee)). Earnings stay on the payee. Reloading alone does not unlink.
+7. **Start over.** Unlinks the previous demo payee when needed (`POST /v1/test/payees/:id/unlink`), then creates a new test earner in this browser with a fresh $250 lesson credit and an empty payout list. Reloading alone does not reset.
 
 `npm run smoke:connect` still uses `POST /v1/test/payees/:id/approve_link` because it cannot scan a QR code. That call is not part of the page.
 
