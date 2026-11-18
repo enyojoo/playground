@@ -117,6 +117,21 @@ export function ConnectCreator() {
     }
   }
 
+  async function startOver() {
+    setBusy("reset");
+    setNotice(null);
+    try {
+      const next = await postConnect<Snapshot>("/api/connect/creator/reset");
+      setSnapshot(next);
+      setEmail("");
+      setCode(null);
+    } catch (error) {
+      fail(error);
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function withdraw() {
     setBusy("withdraw");
     setNotice(null);
@@ -173,8 +188,9 @@ export function ConnectCreator() {
           <input
             type="email"
             className="mt-1 w-full max-w-md rounded-lg border border-border bg-background px-3 py-2"
-            value={email}
+            value={linked ? (snapshot?.payee.email ?? email) : email}
             onChange={(event) => setEmail(event.target.value)}
+            placeholder="Email on your Easner account"
             autoComplete="email"
             disabled={linked}
             required
@@ -230,6 +246,18 @@ export function ConnectCreator() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-2xl border border-dashed border-border bg-background/60 px-5 py-4 sm:px-6">
+        <p className="text-sm text-muted">{CONNECT.resetHint}</p>
+        <button
+          type="button"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/40 disabled:opacity-50"
+          disabled={busy !== null}
+          onClick={() => void startOver()}
+        >
+          {busy === "reset" ? "Resetting…" : CONNECT.resetCta}
+        </button>
       </section>
     </div>
   );

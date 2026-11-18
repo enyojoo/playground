@@ -1,6 +1,8 @@
-/** Fixed demo creator used by the Connect walkthrough. */
+/** Shared test payee reference before per-browser cookies; migrated automatically. */
+export const LEGACY_SHARED_CREATOR_REFERENCE = "creator_ada" as const;
+
+/** Fixed demo creator profile used by the Connect walkthrough (display + API fields). */
 export const DEMO_CREATOR = {
-  reference: "creator_ada",
   name: "Ada",
   email: "ada@example.com",
   incomeType: "royalties" as const,

@@ -188,3 +188,11 @@ export async function listPayouts(payeeId: string): Promise<PayoutList> {
   const params = new URLSearchParams({ payee: payeeId, limit: "20" });
   return easnerConnect<PayoutList>(`/v1/payouts?${params.toString()}`);
 }
+
+/** Test keys only. Clears the test link; payee returns to `pending_link`. Earnings stay. */
+export async function unlinkTestPayee(payeeId: string): Promise<Payee> {
+  return easnerConnect<Payee>(
+    `/v1/test/payees/${encodeURIComponent(payeeId)}/unlink`,
+    { method: "POST" },
+  );
+}

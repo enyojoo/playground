@@ -60,4 +60,7 @@ export const CONNECT = {
     "Easner Connect did not load, so the link and withdraw screens cannot open yet. Try again in a moment.",
   appCodeLabel: "Code for the Easner app",
   errorTitle: "Something went wrong",
+  resetCta: "Start over",
+  resetHint:
+    "Clears this browser’s in-progress link and removes the test Easner connection so you can link again. Lesson earnings stay on the same demo earner.",
 } as const;

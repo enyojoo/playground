@@ -132,6 +132,11 @@ export async function clearStoredLink(): Promise<void> {
   store.delete(PKCE_COOKIE);
 }
 
+export async function clearStoredPayee(): Promise<void> {
+  const store = await cookies();
+  store.delete(PAYEE_COOKIE);
+}
+
 /** Facilitator view: code and URL only. Never the verifier or client secret. */
 export function publicLink(stored: StoredLink | null): {
   code: string;
