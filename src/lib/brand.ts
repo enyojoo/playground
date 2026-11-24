@@ -58,7 +58,6 @@ export const CONNECT = {
   scriptLoading: "Loading Easner Connect…",
   scriptError:
     "Easner Connect did not load, so the link and withdraw screens cannot open yet. Try again in a moment.",
-  appCodeLabel: "Code for the Easner app",
   errorTitle: "Something went wrong",
   resetCta: "Start over",
   resetHint:

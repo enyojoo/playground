@@ -13,9 +13,7 @@ export async function POST() {
       payee: snapshot.payee,
       balance: snapshot.balance,
       payouts: snapshot.payouts,
-      link: snapshot.link
-        ? { code: snapshot.link.code, url: snapshot.link.url }
-        : null,
+      link: snapshot.link ? { url: snapshot.link.url } : null,
     });
   } catch (error) {
     return connectErrorResponse(error);

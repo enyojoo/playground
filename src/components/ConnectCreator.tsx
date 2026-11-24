@@ -16,7 +16,7 @@ type Snapshot = {
   payee: Payee;
   balance: PayeeBalance;
   payouts: Payout[];
-  link: { code: string; url: string } | null;
+  link: { url: string } | null;
 };
 
 type Notice = { code: string; message: string } | null;
@@ -30,16 +30,12 @@ export function ConnectCreator() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [notice, setNotice] = useState<Notice>(null);
   const [busy, setBusy] = useState<string | null>(null);
-  const [code, setCode] = useState<string | null>(null);
   const [email, setEmail] = useState("");
 
   const refresh = useCallback(async () => {
     try {
       const next = await getConnect<Snapshot>("/api/connect/creator/status");
       setSnapshot(next);
-      if (next.link?.code) {
-        setCode(next.link.code);
-      }
     } catch (error) {
       const errorCode = error instanceof Error && "code" in error ? String(error.code) : "";
       setNotice({
@@ -84,9 +80,7 @@ export function ConnectCreator() {
 
       const session = await postConnect<{
         client_secret: string;
-        code: string;
       }>("/api/connect/creator/link-session");
-      setCode(session.code);
 
       window.EasnerConnect.connect({
         clientSecret: session.client_secret,
@@ -124,7 +118,6 @@ export function ConnectCreator() {
       const next = await postConnect<Snapshot>("/api/connect/creator/reset");
       setSnapshot(next);
       setEmail("");
-      setCode(null);
     } catch (error) {
       fail(error);
     } finally {
@@ -209,12 +202,6 @@ export function ConnectCreator() {
         ) : null}
         {scriptState === "error" ? (
           <p className="mt-2 text-xs text-red-900">{CONNECT.scriptError}</p>
-        ) : null}
-        {code ? (
-          <p className="mt-4 text-sm text-muted">
-            {CONNECT.appCodeLabel}{" "}
-            <span className="font-mono text-lg tracking-[0.25em] text-foreground">{code}</span>
-          </p>
         ) : null}
         {snapshot ? (
           <p className="mt-3 text-sm text-muted">

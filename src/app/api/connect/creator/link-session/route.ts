@@ -14,8 +14,6 @@ export async function POST() {
     return NextResponse.json({
       id: session.id,
       client_secret: session.client_secret,
-      code: session.code,
-      url: session.url,
     });
   } catch (error) {
     return connectErrorResponse(error);
